@@ -68,6 +68,7 @@ function TestContent() {
     setQuizStarted(true);
   }, [searchParams]);
 
+  // Map for question-answer mapping
   const handleSelectAnswer = (questionIndex: number, answerIndex: number) => {
     setAnswers(prev => prev.map((a, i) => {
       if (i !== questionIndex) return a;
