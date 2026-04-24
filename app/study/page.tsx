@@ -53,7 +53,6 @@ function StudyContent() {
 
   useEffect(() => {
     const weeksParam = searchParams.get('weeks');
-    const shuffleParam = searchParams.get('shuffle') === 'true';
     
     let filtered: Question[];
     if (weeksParam) {
@@ -63,8 +62,7 @@ function StudyContent() {
       filtered = allQuestions;
     }
     
-    // Shuffle questions if requested
-    const questions = shuffleParam ? shuffleArray(filtered) : filtered;
+    const questions = shuffleArray(filtered);
     
     setQuizQuestions(questions);
     setAnswers(questions.map(q => ({ question: q, selectedAnswer: null, isCorrect: false, showAnswer: false })));
