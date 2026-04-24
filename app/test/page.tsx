@@ -26,6 +26,16 @@ interface AnsweredQuestion {
   selectedAnswer: number | null;
 }
 
+// Utility function to shuffle array
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function TestContent() {
   const searchParams = useSearchParams();
   const [quizStarted, setQuizStarted] = useState(false);
@@ -51,8 +61,10 @@ function TestContent() {
     } else {
       filtered = allQuestions;
     }
-    setQuizQuestions(filtered);
-    setAnswers(filtered.map(q => ({ question: q, selectedAnswer: null })));
+    // Shuffle the questions
+    const shuffled = shuffleArray(filtered);
+    setQuizQuestions(shuffled);
+    setAnswers(shuffled.map(q => ({ question: q, selectedAnswer: null })));
     setQuizStarted(true);
   }, [searchParams]);
 
