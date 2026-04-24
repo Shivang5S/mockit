@@ -20,6 +20,16 @@ interface AnsweredQuestion {
   showAnswer: boolean;
 }
 
+// Utility function to shuffle array
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function StudyContent() {
   const searchParams = useSearchParams();
   const [quizStarted, setQuizStarted] = useState(false);
@@ -43,17 +53,22 @@ function StudyContent() {
 
   useEffect(() => {
     const weeksParam = searchParams.get('weeks');
+    const shuffleParam = searchParams.get('shuffle') === 'true';
+    
+    let filtered: Question[];
     if (weeksParam) {
       const weeks = weeksParam.split(',').map(Number);
-      const filtered = allQuestions.filter(q => weeks.includes(q.week));
-      setQuizQuestions(filtered);
-      setAnswers(filtered.map(q => ({ question: q, selectedAnswer: null, isCorrect: false, showAnswer: false })));
-      setQuizStarted(true);
+      filtered = allQuestions.filter(q => weeks.includes(q.week));
     } else {
-      setQuizQuestions(allQuestions);
-      setAnswers(allQuestions.map(q => ({ question: q, selectedAnswer: null, isCorrect: false, showAnswer: false })));
-      setQuizStarted(true);
+      filtered = allQuestions;
     }
+    
+    // Shuffle questions if requested
+    const questions = shuffleParam ? shuffleArray(filtered) : filtered;
+    
+    setQuizQuestions(questions);
+    setAnswers(questions.map(q => ({ question: q, selectedAnswer: null, isCorrect: false, showAnswer: false })));
+    setQuizStarted(true);
   }, [searchParams]);
 
   const handleSelectAnswer = (questionIndex: number, answerIndex: number) => {
