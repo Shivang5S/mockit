@@ -13,6 +13,7 @@ function PracticeContent() {
   const searchParams = useSearchParams();
   const [selectedWeeks, setSelectedWeeks] = useState<number[]>([]);
   const [selectedMode, setSelectedMode] = useState<Mode | null>(null);
+  const [shuffleQuestions, setShuffleQuestions] = useState(false);
 
   useEffect(() => {
     const weeksParam = searchParams.get('weeks');
@@ -48,8 +49,15 @@ function PracticeContent() {
     if (selectedMode === 'exam') {
       window.location.href = '/exam';
     } else {
-      const params = selectedWeeks.length > 0 ? `?weeks=${selectedWeeks.join(',')}` : '';
-      window.location.href = `/${selectedMode}${params}`;
+      const params = new URLSearchParams();
+      if (selectedWeeks.length > 0) {
+        params.append('weeks', selectedWeeks.join(','));
+      }
+      if (shuffleQuestions) {
+        params.append('shuffle', 'true');
+      }
+      const queryString = params.toString();
+      window.location.href = `/${selectedMode}${queryString ? `?${queryString}` : ''}`;
     }
   };
 
@@ -144,6 +152,25 @@ function PracticeContent() {
               </button>
             </CardContent>
           </Card>
+
+          {selectedMode !== 'exam' && (
+            <Card className="bg-zinc-900 border-zinc-800">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg text-white">Options</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={shuffleQuestions}
+                    onChange={(e) => setShuffleQuestions(e.target.checked)}
+                    className="w-4 h-4 rounded border-zinc-700 bg-zinc-800 text-[#C2410C] cursor-pointer"
+                  />
+                  <span className="text-sm text-zinc-300">Shuffle question order</span>
+                </label>
+              </CardContent>
+            </Card>
+          )}
 
           <Button 
             onClick={handleStart} 
