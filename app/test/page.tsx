@@ -54,6 +54,8 @@ function TestContent() {
 
   useEffect(() => {
     const weeksParam = searchParams.get('weeks');
+    const shuffleParam = searchParams.get('shuffle') === 'true';
+    
     let filtered: Question[];
     if (weeksParam) {
       const weeks = weeksParam.split(',').map(Number);
@@ -61,10 +63,12 @@ function TestContent() {
     } else {
       filtered = allQuestions;
     }
-    // Shuffle the questions
-    const shuffled = shuffleArray(filtered);
-    setQuizQuestions(shuffled);
-    setAnswers(shuffled.map(q => ({ question: q, selectedAnswer: null })));
+    
+    // Shuffle questions if requested
+    const questions = shuffleParam ? shuffleArray(filtered) : filtered;
+    
+    setQuizQuestions(questions);
+    setAnswers(questions.map(q => ({ question: q, selectedAnswer: null })));
     setQuizStarted(true);
   }, [searchParams]);
 
