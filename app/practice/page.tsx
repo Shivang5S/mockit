@@ -53,7 +53,7 @@ function PracticeContent() {
       if (selectedWeeks.length > 0) {
         params.append('weeks', selectedWeeks.join(','));
       }
-      if (shuffleQuestions) {
+      if (shuffleQuestions && selectedMode !== 'test') {
         params.append('shuffle', 'true');
       }
       const queryString = params.toString();
@@ -153,7 +153,7 @@ function PracticeContent() {
             </CardContent>
           </Card>
 
-          {selectedMode !== 'exam' && (
+          {selectedMode === 'study' && (
             <Card className="bg-zinc-900 border-zinc-800">
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg text-white">Options</CardTitle>
