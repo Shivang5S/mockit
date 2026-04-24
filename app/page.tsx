@@ -96,7 +96,7 @@ export default function LandingPage() {
                   <div className="text-4xl md:text-5xl font-serif font-bold text-white light:text-zinc-900 transition-colors">
                     {stat.value}
                   </div>
-                  <div className="text-sm mt-1 uppercase tracking-wider text-zinc-500 light:text-zinc-500 transition-colors">
+                  <div className="text-sm mt-1 uppercase tracking-wider text-zinc-500 transition-colors">
                     {stat.label}
                   </div>
                 </div>
